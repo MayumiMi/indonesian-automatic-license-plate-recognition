@@ -1,0 +1,6 @@
+ultralytics
+opencv-python
+numpy
+fast-plate-ocr[onnx] # Cross-platform
+
+# Python 3.13.5 64-bit
