@@ -79,4 +79,4 @@ else:
 # Clean the OCR result
 recognized_plate = ocr_result.replace('_', '').replace(' ', '').upper()
 
-print(recognized_plate)
+print(f"PLATE_RESULT:{recognized_plate}")
