@@ -56,7 +56,9 @@ if not allowed_plates:
     exit(1)
 
 # === Step 5: Fuzzy Matching ===
-threshold = 85  # Similarity threshold, adjust as needed
+# For 8 character, 87.5% is the threshold for 1 character mistake
+# And 75% for 2 characters mistake
+threshold = 75  # Similarity threshold, adjust as needed
 matched = False
 
 for db_plate in allowed_plates:
