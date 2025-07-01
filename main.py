@@ -61,12 +61,22 @@ resized_plate = cv2.resize(blurred_plate, (128, 64))
 # Apply stronger Gaussian blur by increasing kernel size and sigma, currently not needed
 
 # Optional: Show the grayscale plate (for testing purposes)
-cv2.imshow("Selected Plate", resized_plate)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+# cv2.imshow("Selected Plate", resized_plate)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
 
 # OCR expects [1, 64, 128, 3]
 input_img = np.expand_dims(resized_plate, axis=0)  # shape: (1, 64, 128, 3)
 m = LicensePlateRecognizer('cct-s-v1-global-model')
 result = m.run(input_img)
-print(result)
+
+# Ensure we extract string from list
+if isinstance(result, list) and len(result) > 0:
+    ocr_result = result[0]
+else:
+    ocr_result = str(result)
+
+# Clean the OCR result
+recognized_plate = ocr_result.replace('_', '').replace(' ', '').upper()
+
+print(recognized_plate)
