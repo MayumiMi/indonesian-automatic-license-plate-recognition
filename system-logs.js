@@ -9,10 +9,9 @@ export default async function handler(req, res) {
   });
 
   try {
-    const [rows] = await db.execute('SELECT * FROM access_logs ORDER BY timestamp DESC LIMIT 50');
+    const [rows] = await db.execute('SELECT * FROM system_logs ORDER BY timestamp DESC LIMIT 100');
     res.status(200).json(rows);
   } catch (error) {
-    console.error('Database error:', error);
     res.status(500).json({ error: 'Database error' });
   } finally {
     await db.end();
