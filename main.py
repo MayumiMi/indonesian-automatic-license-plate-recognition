@@ -5,7 +5,7 @@ import numpy as np
 
 model = YOLO('plate-detection-model/best.pt')
 
-image_path = ('test-image-single/IMG_0705.jpeg')
+image_path = ('test-image-single/KB2492YT.jpeg')
 image = cv2.imread(image_path)
 # These are used later to find the closest box to the center of the image
 img_height, img_width = image.shape[:2]
@@ -37,7 +37,7 @@ if selected_box is None:
 # But with padding of 3, it results in KB6185WH, the correct result
 # Only pad 3 and 4 works, 2 and below or 5 and above breaks the results
 # And then we crop the plate
-pad = 3
+pad = 0
 x1, y1, x2, y2 = selected_box
 x1 = max(x1 - pad, 0)
 y1 = max(y1 - pad, 0)
@@ -47,7 +47,7 @@ cropped_plate = image[y1:y2, x1:x2]
 
 # Soften the image slightly
 # The OCR model needs a little bit of blurring to work well
-blurred_plate = cv2.GaussianBlur(cropped_plate, (11, 11), 4.0)
+blurred_plate = cv2.GaussianBlur(cropped_plate, (23, 23), 8.0)
 
 # Resize plate to the expected input size for OCR
 # Resize to 128x64
