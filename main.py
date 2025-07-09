@@ -5,7 +5,8 @@ import numpy as np
 
 model = YOLO('plate-detection-model/best.pt')
 
-image_path = ('test-image-single/KB2492YT.jpeg')
+# image_path = ('test-image-single/KB2492YT.jpeg')
+image_path = ('KB6097CG.jpeg')
 image = cv2.imread(image_path)
 # These are used later to find the closest box to the center of the image
 img_height, img_width = image.shape[:2]
@@ -31,6 +32,7 @@ if results and results[0].boxes is not None:
 
 if selected_box is None:
     print("No license plate detected.")
+    exit()
 
 # This padding really helps with the OCR results
 # In the IMG_0705.jpeg, if padding is 0 the OCR results in K6185NWH
@@ -79,4 +81,4 @@ else:
 # Clean the OCR result
 recognized_plate = ocr_result.replace('_', '').replace(' ', '').upper()
 
-print(f"PLATE_RESULT:{recognized_plate}")
+print(f"PLATE_RESULT: {recognized_plate}")
