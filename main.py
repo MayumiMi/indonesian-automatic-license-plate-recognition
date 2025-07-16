@@ -5,8 +5,7 @@ import numpy as np
 
 model = YOLO('plate-detection-model/best.pt')
 
-# image_path = ('test-image-single/KB2492YT.jpeg')
-image_path = ('KB6097CG.jpeg')
+image_path = ('test-image-single/KB2492YT.jpeg')
 image = cv2.imread(image_path)
 # These are used later to find the closest box to the center of the image
 img_height, img_width = image.shape[:2]

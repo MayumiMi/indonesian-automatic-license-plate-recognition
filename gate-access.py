@@ -1,6 +1,7 @@
 import subprocess
 import re
 from mysql.connector import connect, Error
+from datetime import datetime  # Added for timestamp handling
 
 # === Database Configuration ===
 DB_CONFIG = {
@@ -10,15 +11,18 @@ DB_CONFIG = {
     'database': 'automatic_gate'
 }
 
-# === Reusable Logging Function ===
+# === Reusable Logging Function (UPDATED for logs table) ===
 def write_log(level, source, message, user_id=None):
     try:
         db_connection = connect(**DB_CONFIG)
         cursor = db_connection.cursor()
+        
+        # Updated INSERT statement for logs table
         cursor.execute("""
-            INSERT INTO system_logs (level, source, message, user_id)
-            VALUES (%s, %s, %s, %s)
-        """, (level, source, message, user_id))
+            INSERT INTO logs (timestamp, level, source, message, user_id)
+            VALUES (%s, %s, %s, %s, %s)
+        """, (datetime.now(), level, source, message, user_id))
+        
         db_connection.commit()
         cursor.close()
         db_connection.close()
@@ -61,6 +65,8 @@ try:
     cursor = db_connection.cursor()
     cursor.execute("SELECT plate_number FROM allowed_plates")
     allowed_plates = [plate[0].replace('_', '').replace(' ', '').upper() for plate in cursor.fetchall()]
+    cursor.close()
+    db_connection.close()
 except Error as err:
     print(f"❌ ERROR: Failed to load plates: {err}")
     write_log('ERROR', 'Database', f'Failed to load allowed plates: {err}', None)
@@ -97,10 +103,3 @@ if not matched:
     log_message = f"Access denied: {cleaned_plate} did not match any allowed plate."
     print(f"❌ {log_message}")
     write_log('DENIED', 'GateAccess', log_message, None)
-
-# === Step 5: Clean Up ===
-try:
-    cursor.close()
-    db_connection.close()
-except:
-    pass  # Ignore if already closed
