@@ -3,5 +3,6 @@ opencv-python
 numpy
 fast-plate-ocr[onnx] # Cross-platform
 mysql-connector-python
+gpiozero
 
 # Python 3.13.5 64-bit
